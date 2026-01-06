@@ -14,6 +14,8 @@
 		7D9CFA4A28DDEE7F00D971A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D9CFA4828DDEE7F00D971A7 /* Main.storyboard */; };
 		7D9CFA4C28DDEE8000D971A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D9CFA4B28DDEE8000D971A7 /* Assets.xcassets */; };
 		7D9CFA4F28DDEE8000D971A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D9CFA4D28DDEE8000D971A7 /* LaunchScreen.storyboard */; };
+		891671E12EEB5CC2002673B1 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E648E92EEAD9FD00609ACB /* ProfileController.swift */; };
+		89982EE12EF2E6F80048B077 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89982EE02EF2E6F60048B077 /* SingleImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,7 @@
 		7D9CFA4B28DDEE8000D971A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7D9CFA4E28DDEE8000D971A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7D9CFA5028DDEE8000D971A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		89982EE02EF2E6F60048B077 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		89E648E92EEAD9FD00609ACB /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,7 +46,6 @@
 		7D9CFA3628DDEE7F00D971A7 = {
 			isa = PBXGroup;
 			children = (
-				89E648E82EEAD9EF00609ACB /* Profile */,
 				7D9CFA4128DDEE7F00D971A7 /* Image Feed */,
 				7D9CFA4028DDEE7F00D971A7 /* Products */,
 			);
@@ -62,6 +64,8 @@
 			children = (
 				7D9CFA4228DDEE7F00D971A7 /* AppDelegate.swift */,
 				7D9CFA4428DDEE7F00D971A7 /* SceneDelegate.swift */,
+				89982EE22EF2E94A0048B077 /* SingleImageView */,
+				89E648E82EEAD9EF00609ACB /* Profile */,
 				7D9CFA5A28DDF66900D971A7 /* ImagesList */,
 				7D9CFA4828DDEE7F00D971A7 /* Main.storyboard */,
 				7D9CFA4B28DDEE8000D971A7 /* Assets.xcassets */,
@@ -78,6 +82,14 @@
 				7D3DFB1428DDF696005A13F3 /* ImagesListViewController.swift */,
 			);
 			path = ImagesList;
+			sourceTree = "<group>";
+		};
+		89982EE22EF2E94A0048B077 /* SingleImageView */ = {
+			isa = PBXGroup;
+			children = (
+				89982EE02EF2E6F60048B077 /* SingleImageViewController.swift */,
+			);
+			path = SingleImageView;
 			sourceTree = "<group>";
 		};
 		89E648E82EEAD9EF00609ACB /* Profile */ = {
@@ -123,7 +135,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7D9CFA3A28DDEE7F00D971A7 /* Build configuration list for PBXProject "Image Feed2" */;
+			buildConfigurationList = 7D9CFA3A28DDEE7F00D971A7 /* Build configuration list for PBXProject "Image Feed" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -159,9 +171,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				891671E12EEB5CC2002673B1 /* ProfileController.swift in Sources */,
 				7D9CFA4328DDEE7F00D971A7 /* AppDelegate.swift in Sources */,
 				7D9CFA4528DDEE7F00D971A7 /* SceneDelegate.swift in Sources */,
 				7D3DFB1628DDF696005A13F3 /* ImagesListViewController.swift in Sources */,
+				89982EE12EF2E6F80048B077 /* SingleImageViewController.swift in Sources */,
 				7D3DFB1528DDF696005A13F3 /* ImagesListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,7 +377,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7D9CFA3A28DDEE7F00D971A7 /* Build configuration list for PBXProject "Image Feed2" */ = {
+		7D9CFA3A28DDEE7F00D971A7 /* Build configuration list for PBXProject "Image Feed" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D9CFA5128DDEE8000D971A7 /* Debug */,
