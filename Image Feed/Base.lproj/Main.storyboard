@@ -150,7 +150,7 @@
                                 <rect key="frame" x="0.0" y="48" width="414" height="814"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="IAh-1x-51M">
-                                        <rect key="frame" x="0.0" y="119" width="414" height="414"/>
+                                        <rect key="frame" x="0.0" y="-66" width="414" height="414"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -194,13 +194,13 @@
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="3Qo-Jx-drp" firstAttribute="trailing" secondItem="uTU-x3-10w" secondAttribute="trailing" id="0YP-ag-7De"/>
-                            <constraint firstItem="uTU-x3-10w" firstAttribute="top" secondItem="3Qo-Jx-drp" secondAttribute="top" id="6Aj-Mv-SdC"/>
+                            <constraint firstAttribute="top" secondItem="3Qo-Jx-drp" secondAttribute="top" id="6Aj-Mv-SdC"/>
                             <constraint firstItem="uTU-x3-10w" firstAttribute="leading" secondItem="3Qo-Jx-drp" secondAttribute="leading" id="E0l-91-2DB"/>
                             <constraint firstItem="faM-pN-1zx" firstAttribute="leading" secondItem="uTU-x3-10w" secondAttribute="leading" constant="17" id="GEx-LT-0wy"/>
                             <constraint firstItem="68v-s5-paG" firstAttribute="centerX" secondItem="uTU-x3-10w" secondAttribute="centerX" id="Jbx-z3-N83"/>
                             <constraint firstItem="faM-pN-1zx" firstAttribute="top" secondItem="uTU-x3-10w" secondAttribute="top" constant="8" id="MGo-Y4-49p"/>
                             <constraint firstItem="uTU-x3-10w" firstAttribute="bottom" secondItem="68v-s5-paG" secondAttribute="bottom" constant="17" id="PgN-dB-6Vp"/>
-                            <constraint firstItem="3Qo-Jx-drp" firstAttribute="bottom" secondItem="uTU-x3-10w" secondAttribute="bottom" id="iQK-Xb-IeC"/>
+                            <constraint firstItem="3Qo-Jx-drp" firstAttribute="bottom" secondItem="6Zu-8P-mmk" secondAttribute="bottom" id="iQK-Xb-IeC"/>
                         </constraints>
                     </view>
                     <connections>
