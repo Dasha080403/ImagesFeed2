@@ -62,7 +62,7 @@ final class ProfileViewController: UIViewController {
         
         let loginLabel = UILabel()
         loginLabel.text = "@Oks"
-        loginLabel.textColor = UIColor(named: "YP White")
+        loginLabel.textColor = UIColor(named: "YP Gray")
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginLabel)
@@ -92,7 +92,7 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(didTapButton)
         )
-        button.tintColor = .red
+        button.tintColor = UIColor(named: "YP Red")
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
         
