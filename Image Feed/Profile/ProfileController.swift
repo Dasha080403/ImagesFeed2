@@ -83,7 +83,6 @@ final class ProfileViewController: UIViewController {
         
         textLabel.leadingAnchor.constraint(equalTo: nameLabel!.leadingAnchor).isActive = true
         textLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8).isActive = true
-        //self.textLabel = textLabel
     }
 
     private func setupButton() {

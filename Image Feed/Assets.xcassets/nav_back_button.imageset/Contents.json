@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Active.png",
+      "filename" : "Backward.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Active@2x.png",
+      "filename" : "Backward@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
