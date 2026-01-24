@@ -9,8 +9,8 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
-    private var additionalLabel1: UILabel?
-    private var additionalLabel2: UILabel?
+    private var loginLabel: UILabel?
+    private var textLabel: UILabel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
