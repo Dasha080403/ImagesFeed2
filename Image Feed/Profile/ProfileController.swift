@@ -22,11 +22,11 @@ final class ProfileViewController: UIViewController {
     }
 
     private func setupView() {
-        view.backgroundColor = UIColor(named: "YP Black")
+        view.backgroundColor = UIColor(resource: .ypBlack)
     }
 
     private func setupProfileImageView() {
-        let profileImage = UIImage(named: "UserPhoto")
+        let profileImage = UIImage(resource: .userPhoto)
         let imageView = UIImageView(image: profileImage)
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
@@ -34,16 +34,18 @@ final class ProfileViewController: UIViewController {
         view.addSubview(imageView)
 
         
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        NSLayoutConstraint.activate([
+            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.heightAnchor.constraint(equalToConstant: 70)
+        ])
     }
 
     private func setupNameLabel() {
         let nameLabel = UILabel()
         nameLabel.text = "Оксана Самойлова"
-        nameLabel.textColor = UIColor(named: "YP White")
+        nameLabel.textColor = UIColor(resource: .ypWhite)
         nameLabel.font = .boldSystemFont(ofSize: 23)
         //nameLabel.font = UIFont(name: "YS Display-Bold", size: 23)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +64,7 @@ final class ProfileViewController: UIViewController {
         
         let loginLabel = UILabel()
         loginLabel.text = "@Oks"
-        loginLabel.textColor = UIColor(named: "YP Gray")
+        loginLabel.textColor = UIColor(resource: .ypGray)
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginLabel)
@@ -75,7 +77,7 @@ final class ProfileViewController: UIViewController {
         
         let textLabel = UILabel()
         textLabel.text = "Мяу"
-        textLabel.textColor = UIColor(named: "YP White")
+        textLabel.textColor = UIColor(resource: .ypWhite)
         textLabel.font = .systemFont(ofSize: 13)
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(textLabel)
@@ -92,14 +94,16 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(didTapButton)
         )
-        button.tintColor = UIColor(named: "YP Red")
+        button.tintColor = UIColor(resource: .ypRed)
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
         
-        button.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        button.centerYAnchor.constraint(equalTo: (view.subviews.first(where: { $0 is UIImageView }) as? UIImageView)?.centerYAnchor ?? view.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 44),
+            button.heightAnchor.constraint(equalToConstant: 44),
+            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+        button.centerYAnchor.constraint(equalTo: (view.subviews.first(where: { $0 is UIImageView }) as? UIImageView)?.centerYAnchor ?? view.centerYAnchor)
+        ])
     }
 
     @objc private func didTapButton() {
