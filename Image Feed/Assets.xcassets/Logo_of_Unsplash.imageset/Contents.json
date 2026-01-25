@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Vector.png",
+      "filename" : "Logo_of_Unsplash.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Vector@2x.png",
+      "filename" : "Logo_of_Unsplash@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

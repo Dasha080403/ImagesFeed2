@@ -2,7 +2,7 @@
 //  AuthViewController.swift
 //  Image Feed
 //
-//  Created by Дарья Савинкина on 24.01.2026.
+//  Created by Дарья Савинкина on 24.01.2026. Dasha2003.
 //
 
 import UIKit
@@ -45,7 +45,7 @@ final class AuthViewController: UIViewController {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "ypBlack")
+        navigationItem.backBarButtonItem?.tintColor = UIColor(resource: .ypBlack)
     }
 }
 
