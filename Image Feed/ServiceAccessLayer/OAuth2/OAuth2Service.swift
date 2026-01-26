@@ -23,33 +23,26 @@ final class OAuth2Service {
     private init() { }
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let url = URL(string: OAuth2Service.unsplashTokenURL) else {
+        guard var components = URLComponents(string: Self.unsplashTokenURL) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+        
+        components.queryItems = [
+            .init(name: "client_id", value: Constants.accessKey),
+            .init(name: "client_secret", value: Constants.secretKey),
+            .init(name: "redirect_uri", value: Constants.redirectURI),
+            .init(name: "code", value: code),
+            .init(name: "grant_type", value: "authorization_code"),
+        ]
+        
+        guard let url = components.url else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        let parameters: [String: String] = [
-            "client_id": Constants.accessKey,
-            "redirect_uri": Constants.redirectURI,
-            "grant_type": "authorization_code",
-            "code": code,
-            "scope": Constants.accessScope
-        ]
-        
-        
-        var bodyString = ""
-        for (key, value) in parameters {
-            if !bodyString.isEmpty {
-                bodyString += "&"
-            }
-            bodyString += "(key)=(value)"
-        }
-        
-        request.httpBody = bodyString.data(using: .utf8)
 
         fetchData(with: request) { result in
             switch result {
@@ -57,12 +50,18 @@ final class OAuth2Service {
                 do {
                     let decoder = JSONDecoder()
                     let tokenResponse = try decoder.decode(OAuthTokenResponse.self, from: data)
-                    completion(.success(tokenResponse.accessToken))
+                    DispatchQueue.main.async {
+                        completion(.success(tokenResponse.accessToken))
+                    }
                 } catch {
-                    completion(.failure(error))
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                 }
             case .failure(let error):
-                completion(.failure(error))
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -90,8 +89,8 @@ final class OAuth2Service {
         
         task.resume()
     }
+    
     private enum NetworkError: Error {
         case codeError
     }
-    
 }
