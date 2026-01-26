@@ -112,7 +112,7 @@
                             <constraint firstAttribute="top" secondItem="0ZD-Gs-GgP" secondAttribute="top" id="l0f-Ng-QVT"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="Active2" selectedImage="Active" id="Mww-i7-tWD"/>
+                    <tabBarItem key="tabBarItem" title="" image="Active2" selectedImage="Active 1" id="Mww-i7-tWD"/>
                     <navigationItem key="navigationItem" id="fNG-x8-owp"/>
                     <connections>
                         <outlet property="tableView" destination="0ZD-Gs-GgP" id="Fuw-16-5ad"/>
@@ -126,7 +126,7 @@
         <!--Auth View Controller-->
         <scene sceneID="q8j-i2-wkT">
             <objects>
-                <viewController id="0eN-BM-EGu" customClass="AuthViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="0eN-BM-EGu" customClass="AuthViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9bH-nR-Q7i">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="848"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,7 +182,7 @@
         <!--Web View View Controller-->
         <scene sceneID="AIT-E7-08K">
             <objects>
-                <viewController id="NwP-NK-f26" customClass="WebViewViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="NwP-NK-f26" customClass="WebViewViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jCF-s6-U5T">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="848"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -265,7 +265,7 @@
                                     <constraint firstAttribute="width" constant="50" id="IGZ-7F-W2C"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Sharing">
+                                <state key="normal" image="Sharing 1">
                                     <color key="titleColor" name="YP Black"/>
                                 </state>
                                 <connections>
@@ -313,7 +313,7 @@
         <!--Splash View Controller-->
         <scene sceneID="ER9-db-9ip">
             <objects>
-                <viewController id="fQb-vG-4jM" customClass="SplashViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="fQb-vG-4jM" customClass="SplashViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mxk-jV-1Da">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -362,11 +362,11 @@
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
-        <image name="Active" width="30" height="30"/>
+        <image name="Active 1" width="30" height="30"/>
         <image name="Active2" width="30" height="30"/>
         <image name="Logo_of_Unsplash" width="60" height="60"/>
         <image name="ProfilePhoto" width="30" height="30"/>
-        <image name="Sharing" width="50" height="50"/>
+        <image name="Sharing 1" width="50" height="50"/>
         <image name="chevron.backward" width="9" height="16"/>
         <image name="like_button_on" width="42" height="42"/>
         <image name="splash_screen_logo" width="73" height="75.5"/>

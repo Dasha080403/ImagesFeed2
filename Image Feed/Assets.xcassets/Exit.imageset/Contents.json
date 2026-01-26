@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Sharing.png",
+      "filename" : "Exit.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Sharing@2x.png",
+      "filename" : "Exit@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
