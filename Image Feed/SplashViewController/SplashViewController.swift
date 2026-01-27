@@ -1,7 +1,7 @@
 //
 //  SplashViewController.swift
 //  Image Feed
-//
+//savinkina2003@mail.ru Dasha2003.
 //  Created by Дарья Савинкина on 24.01.2026.
 //
 
@@ -14,13 +14,8 @@ final class SplashViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if storage.token != nil {
-            switchToTabBarController()
-        } else {
-            // Show Auth Screen
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
-        }
+checkAutorize()
+       
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -30,6 +25,14 @@ final class SplashViewController: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
+    }
+    func checkAutorize (){
+        if storage.token != nil {
+            switchToTabBarController()
+        } else {
+            // Show Auth Screen
+            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+        }
     }
 
     private func switchToTabBarController() {
@@ -62,6 +65,7 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
+        checkAutorize()
         vc.dismiss(animated: true)
         
         switchToTabBarController()

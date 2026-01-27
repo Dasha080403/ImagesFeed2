@@ -214,7 +214,7 @@
                     <navigationItem key="navigationItem" id="kpB-bC-KW3"/>
                     <connections>
                         <outlet property="progressView" destination="5Yy-Oz-Sum" id="R1C-Yn-ncS"/>
-                        <outlet property="webView" destination="d7r-Fx-2er" id="Cn7-bT-aah"/>
+                        <outlet property="webView" destination="d7r-Fx-2er" id="HTH-DJ-469"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a76-bX-BcA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

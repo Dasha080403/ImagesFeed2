@@ -19,6 +19,7 @@ final class AuthViewController: UIViewController {
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
     private var isAuthenticating = false
+    private let storage = OAuth2TokenStorage.shared
     
     weak var delegate: AuthViewControllerDelegate?
     
@@ -29,16 +30,16 @@ final class AuthViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination as? WebViewViewController
-            else {
-                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
-                return
+             guard
+                    let webViewViewController = segue.destination as? WebViewViewController
+                else {
+                    assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
+                    return
+                }
+                webViewViewController.delegate = self
+            } else {
+                super.prepare(for: segue, sender: sender)
             }
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
     }
     
     private func configureBackButton() {
@@ -49,16 +50,11 @@ final class AuthViewController: UIViewController {
     }
 }
 
-extension AuthViewController: WebViewViewControllerDelegate {
+extension AuthViewController: WebViewViewControllerDelegate{
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true)
-       
-        guard !isAuthenticating else { return }
+       guard !isAuthenticating else { return }
                isAuthenticating = true
-
-               vc.dismiss(animated: true)
-        
-        fetchOAuthToken(code) { [weak self] result in
+    fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
@@ -69,6 +65,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
                 break
             }
         }
+        vc.dismiss(animated: true)
     }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
