@@ -15,8 +15,7 @@ struct OAuthTokenResponse: Codable {
         case accessToken = "access_token"
     }
 }
-
-final class OAuth2Service {
+    final class OAuth2Service {
     static let shared = OAuth2Service()
     static let unsplashTokenURL = "https://unsplash.com/oauth/token"
     
@@ -50,6 +49,7 @@ final class OAuth2Service {
                 do {
                     let decoder = JSONDecoder()
                     let tokenResponse = try decoder.decode(OAuthTokenResponse.self, from: data)
+                    OAuth2TokenStorage.shared.token = tokenResponse.accessToken
                     DispatchQueue.main.async {
                         completion(.success(tokenResponse.accessToken))
                     }
@@ -89,8 +89,10 @@ final class OAuth2Service {
         
         task.resume()
     }
+   
     
     private enum NetworkError: Error {
         case codeError
     }
+    
 }

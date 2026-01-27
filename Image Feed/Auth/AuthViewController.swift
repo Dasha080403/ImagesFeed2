@@ -18,14 +18,14 @@ final class AuthViewController: UIViewController {
     @IBOutlet weak var logButton: UIButton!
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
+    private var isAuthenticating = false
     
     weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureBackButton()
-    }
+       
+            }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
@@ -52,6 +52,11 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true)
+       
+        guard !isAuthenticating else { return }
+               isAuthenticating = true
+
+               vc.dismiss(animated: true)
         
         fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
