@@ -18,7 +18,7 @@ struct OAuthTokenResponse: Codable {
     final class OAuth2Service {
     static let shared = OAuth2Service()
     static let unsplashTokenURL = "https://unsplash.com/oauth/token"
-    
+    private let jsonDecoder = JSONDecoder()
     private init() { }
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -40,27 +40,35 @@ struct OAuthTokenResponse: Codable {
             return
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        enum HTTPMethod: String {
+            case get = "GET"
+            case post = "POST"
+            case put = "PUT"
+            case delete = "DELETE"
+        }
 
-        fetchData(with: request) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let tokenResponse = try decoder.decode(OAuthTokenResponse.self, from: data)
-                    OAuth2TokenStorage.shared.token = tokenResponse.accessToken
-                    DispatchQueue.main.async {
-                        completion(.success(tokenResponse.accessToken))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    completion(.failure(error))
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+
+fetchData(with: request) { [self] result in
+switch result {
+case .success(let data):
+do {
+let tokenResponse = try jsonDecoder.decode(OAuthTokenResponse.self, from: data)
+OAuth2TokenStorage.shared.token = tokenResponse.accessToken
+    DispatchQueue.main.async {
+        completion(.success(tokenResponse.accessToken))
+    }
+}
+    catch {
+DispatchQueue.main.async {
+completion(.failure(error))
+    }
+}
+case .failure(let error):
+DispatchQueue.main.async {
+completion(.failure(error))
                 }
             }
         }
