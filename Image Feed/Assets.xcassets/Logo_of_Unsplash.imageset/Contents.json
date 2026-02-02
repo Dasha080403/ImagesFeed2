@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Sharing.png",
+      "filename" : "Logo_of_Unsplash.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Sharing@2x.png",
+      "filename" : "Logo_of_Unsplash@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
