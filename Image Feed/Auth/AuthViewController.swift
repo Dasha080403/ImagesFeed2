@@ -52,8 +52,8 @@ final class AuthViewController: UIViewController {
 }
 
 extension AuthViewController: WebViewViewControllerDelegate{
-    UIBlockingProgressHUD.show()
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        UIBlockingProgressHUD.show()
     fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -63,7 +63,7 @@ extension AuthViewController: WebViewViewControllerDelegate{
                 // TODO [Sprint 11] Добавьте обработку ошибки
                 break
             }
-        Image_Feed.UIBlockingProgressHUD.dismiss
+        UIBlockingProgressHUD.dismiss()
         }
         vc.dismiss(animated: true)
         

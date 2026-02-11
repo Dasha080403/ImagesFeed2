@@ -10,15 +10,42 @@ import UIKit
 final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
     private var loginLabel: UILabel?
-    private var textLabel: UILabel?
+    private var descriptionLabel: UILabel?
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupProfileImageView()
         setupNameLabel()
-        setupAdditionalLabels()
+        setupLoginLabels()
         setupButton()
+        
+        if let profile = ProfileService.shared.profile {
+            updateProfileDetails(profile: profile)
+            
+            profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) {
+                [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvavtar()
+            }
+            updateAvavtar()
+        }
+    }
+
+    
+    private func updateAvavtar(){
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+    }
+    
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel?.text = profile.name
+        loginLabel?.text = profile.loginName
+        descriptionLabel?.text = profile.bio
     }
 
     private func setupView() {
@@ -44,7 +71,6 @@ final class ProfileViewController: UIViewController {
 
     private func setupNameLabel() {
         let nameLabel = UILabel()
-        nameLabel.text = "Оксана Самойлова"
         nameLabel.textColor = UIColor(resource: .ypWhite)
         nameLabel.font = .boldSystemFont(ofSize: 23)
         //nameLabel.font = UIFont(name: "YS Display-Bold", size: 23)
@@ -60,10 +86,9 @@ final class ProfileViewController: UIViewController {
         self.nameLabel = nameLabel
     }
 
-    private func setupAdditionalLabels() {
+    private func setupLoginLabels() {
         
         let loginLabel = UILabel()
-        loginLabel.text = "@Oks"
         loginLabel.textColor = UIColor(resource: .ypGray)
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +101,6 @@ final class ProfileViewController: UIViewController {
 
         
         let textLabel = UILabel()
-        textLabel.text = "Мяу"
         textLabel.textColor = UIColor(resource: .ypWhite)
         textLabel.font = .systemFont(ofSize: 13)
         textLabel.translatesAutoresizingMaskIntoConstraints = false

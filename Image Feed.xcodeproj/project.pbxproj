@@ -14,7 +14,7 @@
 		7D9CFA4A28DDEE7F00D971A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D9CFA4828DDEE7F00D971A7 /* Main.storyboard */; };
 		7D9CFA4C28DDEE8000D971A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D9CFA4B28DDEE8000D971A7 /* Assets.xcassets */; };
 		7D9CFA4F28DDEE8000D971A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D9CFA4D28DDEE8000D971A7 /* LaunchScreen.storyboard */; };
-		891671E12EEB5CC2002673B1 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E648E92EEAD9FD00609ACB /* ProfileController.swift */; };
+		891671E12EEB5CC2002673B1 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E648E92EEAD9FD00609ACB /* ProfileViewController.swift */; };
 		892B8DB22F2518DC003F1181 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892B8DB12F2518DC003F1181 /* WebKit.framework */; };
 		8959F63C2F2A7956001B87E7 /* sprint11.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8959F6312F2A7955001B87E7 /* sprint11.framework */; };
 		8959F6462F2A7956001B87E7 /* sprint11.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8959F6312F2A7955001B87E7 /* sprint11.framework */; };
@@ -28,6 +28,10 @@
 		89A301262F250E740006A90E /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A301252F250E640006A90E /* OAuth2TokenStorage.swift */; };
 		89A301292F250EAD0006A90E /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A301282F250EAB0006A90E /* SplashViewController.swift */; };
 		89DFFBAF2F2BFB3800A64FF9 /* UIBlockingProgressHUD..swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFFBAE2F2BFB2C00A64FF9 /* UIBlockingProgressHUD..swift */; };
+		89DFFBB82F30D28B00A64FF9 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFFBB72F30D28700A64FF9 /* ProfileService.swift */; };
+		89DFFBBC2F328B7F00A64FF9 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 89DFFBBB2F328B7F00A64FF9 /* ProgressHUD */; };
+		89DFFBBF2F328E3F00A64FF9 /* URLSession+data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFFBBE2F328E3D00A64FF9 /* URLSession+data.swift */; };
+		89DFFBC32F33EBE600A64FF9 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFFBC22F33EBE100A64FF9 /* ProfileImageService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +93,10 @@
 		89A301252F250E640006A90E /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		89A301282F250EAB0006A90E /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		89DFFBAE2F2BFB2C00A64FF9 /* UIBlockingProgressHUD..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD..swift; sourceTree = "<group>"; };
-		89E648E92EEAD9FD00609ACB /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		89DFFBB72F30D28700A64FF9 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		89DFFBBE2F328E3D00A64FF9 /* URLSession+data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+data.swift"; sourceTree = "<group>"; };
+		89DFFBC22F33EBE100A64FF9 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
+		89E648E92EEAD9FD00609ACB /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -103,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8972E0702F2A7E9800411CA3 /* ProgressHUD in Frameworks */,
+				89DFFBBC2F328B7F00A64FF9 /* ProgressHUD in Frameworks */,
 				8959F6462F2A7956001B87E7 /* sprint11.framework in Frameworks */,
 				892B8DB22F2518DC003F1181 /* WebKit.framework in Frameworks */,
 			);
@@ -213,7 +221,9 @@
 		89A301212F250E310006A90E /* ServiceAccessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				89DFFBB92F30E86700A64FF9 /* ProfileService */,
 				89A301222F250E440006A90E /* OAuth2 */,
+				89DFFBBD2F328E2600A64FF9 /* Network */,
 			);
 			path = ServiceAccessLayer;
 			sourceTree = "<group>";
@@ -243,10 +253,27 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		89DFFBB92F30E86700A64FF9 /* ProfileService */ = {
+			isa = PBXGroup;
+			children = (
+				89DFFBC22F33EBE100A64FF9 /* ProfileImageService.swift */,
+				89DFFBB72F30D28700A64FF9 /* ProfileService.swift */,
+			);
+			path = ProfileService;
+			sourceTree = "<group>";
+		};
+		89DFFBBD2F328E2600A64FF9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				89DFFBBE2F328E3D00A64FF9 /* URLSession+data.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		89E648E82EEAD9EF00609ACB /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				89E648E92EEAD9FD00609ACB /* ProfileController.swift */,
+				89E648E92EEAD9FD00609ACB /* ProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -338,7 +365,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2620;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					7D9CFA3E28DDEE7F00D971A7 = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -362,7 +389,7 @@
 			);
 			mainGroup = 7D9CFA3628DDEE7F00D971A7;
 			packageReferences = (
-				89DFFBB02F30CA4B00A64FF9 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				89DFFBC42F3B6E6000A64FF9 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 			);
 			productRefGroup = 7D9CFA4028DDEE7F00D971A7 /* Products */;
 			projectDirPath = "";
@@ -407,7 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				891671E12EEB5CC2002673B1 /* ProfileController.swift in Sources */,
+				891671E12EEB5CC2002673B1 /* ProfileViewController.swift in Sources */,
 				7D9CFA4328DDEE7F00D971A7 /* AppDelegate.swift in Sources */,
 				7D9CFA4528DDEE7F00D971A7 /* SceneDelegate.swift in Sources */,
 				89A301292F250EAD0006A90E /* SplashViewController.swift in Sources */,
@@ -415,11 +442,14 @@
 				89A301192F24CF9B0006A90E /* AuthViewController.swift in Sources */,
 				89A301262F250E740006A90E /* OAuth2TokenStorage.swift in Sources */,
 				7D3DFB1628DDF696005A13F3 /* ImagesListViewController.swift in Sources */,
+				89DFFBBF2F328E3F00A64FF9 /* URLSession+data.swift in Sources */,
+				89DFFBC32F33EBE600A64FF9 /* ProfileImageService.swift in Sources */,
 				89982EE12EF2E6F80048B077 /* SingleImageViewController.swift in Sources */,
 				7D3DFB1528DDF696005A13F3 /* ImagesListCell.swift in Sources */,
 				89A301202F24FA5B0006A90E /* WebViewViewController.swift in Sources */,
 				89A301242F250E600006A90E /* OAuth2Service.swift in Sources */,
 				89A3011F2F24E96C0006A90E /* Constants.swift in Sources */,
+				89DFFBB82F30D28B00A64FF9 /* ProfileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,11 +557,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -581,10 +612,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -598,15 +630,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F5YRK24FD8;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Image Feed/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -627,15 +661,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F5YRK24FD8;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Image Feed/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -655,6 +691,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F5YRK24FD8;
@@ -700,6 +737,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = F5YRK24FD8;
@@ -839,12 +877,20 @@
 				minimumVersion = 13.6.1;
 			};
 		};
-		89DFFBB02F30CA4B00A64FF9 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+		89DFFBBA2F328B7F00A64FF9 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.1;
+			};
+		};
+		89DFFBC42F3B6E6000A64FF9 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
 			requirement = {
 				kind = exactVersion;
-				version = 14.1.8;
+				version = 14.1.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -853,6 +899,11 @@
 		8972E06F2F2A7E9800411CA3 /* ProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8972E06E2F2A7E9800411CA3 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
+		};
+		89DFFBBB2F328B7F00A64FF9 /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 89DFFBBA2F328B7F00A64FF9 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
 			productName = ProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */

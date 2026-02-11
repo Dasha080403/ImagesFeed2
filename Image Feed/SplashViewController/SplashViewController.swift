@@ -10,12 +10,19 @@ import UIKit
 final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
 
-    private let storage = OAuth2TokenStorage.shared
-
+    private let storage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared 
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-checkAutorize()
-       
+
+        if let token = storage.token {
+            switchToTabBarController()
+            fetchProfile(token: token)
+        } else {
+            // Show Auth Screen
+            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -26,11 +33,11 @@ checkAutorize()
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
-    func checkAutorize (){
+    
+    func checkAutorize() {
         if storage.token != nil {
             switchToTabBarController()
         } else {
-            // Show Auth Screen
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
@@ -40,9 +47,29 @@ checkAutorize()
             assertionFailure("Invalid window configuration")
             return
         }
+        
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
+    }
+    
+    private func fetchProfile(token: String) {
+        UIBlockingProgressHUD.show()
+        profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+
+            guard let self = self else { return }
+
+            switch result {
+            case let .success(profile):
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
+                self.switchToTabBarController()
+
+            case let .failure(error):
+                print(error)
+                break
+            }
+        }
     }
 }
 
@@ -53,7 +80,7 @@ extension SplashViewController {
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
             else {
-                assertionFailure("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)")
+                assertionFailure("Failed to prepare for (showAuthenticationScreenSegueIdentifier)")
                 return
             }
             viewController.delegate = self
@@ -63,9 +90,24 @@ extension SplashViewController {
     }
 }
 
-extension SplashViewController: AuthViewControllerDelegate {
+/*extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         checkAutorize()
+        vc.dismiss(animated: true)
+        guard let token = storage.token else {
+            return
+        }
+        
+        fetchProfile(token: token)
+        switchToTabBarController()
+    }
+}
+func didAuthenticate(_ vc: AuthViewController) {
+    vc.dismiss(animated: true)
+ /**/*/
+
+extension SplashViewController: AuthViewControllerDelegate {
+    func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
         
         switchToTabBarController()

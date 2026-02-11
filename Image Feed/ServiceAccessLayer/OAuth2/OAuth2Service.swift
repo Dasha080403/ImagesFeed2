@@ -28,7 +28,6 @@ final class OAuth2Service {
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         queue.sync {
             if let existingCompletion = ongoingRequests[code] {
-                // Если запрос с таким кодом уже существует, добавляем новый completion в очередь
                 ongoingRequests[code] = { result in
                     existingCompletion(result)
                     completion(result)
