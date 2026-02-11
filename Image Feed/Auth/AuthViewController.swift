@@ -24,10 +24,6 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-       
-            }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
@@ -59,17 +55,23 @@ extension AuthViewController: WebViewViewControllerDelegate{
             switch result {
             case .success:
                 self.delegate?.didAuthenticate(self)
-            case .failure:
-                // TODO [Sprint 11] Добавьте обработку ошибки
-                break
+            case .failure(let error):
+                self.showErrorAlert(error: error)
             }
         UIBlockingProgressHUD.dismiss()
         }
         vc.dismiss(animated: true)
         
     }
-    
-
+    private func showErrorAlert(error: Error) {
+    let alertController = UIAlertController(title: "Что-то пошло не так", message: "Не удалось войти в систему: (error.localizedDescription)", preferredStyle: .alert)
+    let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+    alertController.addAction(okAction)
+            
+    DispatchQueue.main.async {
+    self.present(alertController, animated: true, completion: nil)
+            }
+        }
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
        
