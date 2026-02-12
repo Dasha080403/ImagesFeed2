@@ -4,7 +4,6 @@
 //
 //  Created by Дарья Савинкина on 02.02.2026.
 //
-
 import Foundation
 
 struct Profile {
@@ -21,7 +20,7 @@ struct ProfileResult: Codable {
     let bio: String?
 
     private enum CodingKeys: String, CodingKey {
-        case username = "user_name"
+        case username = "username"
         case firstName = "first_name"
         case lastName = "last_name"
         case bio = "bio"
@@ -36,48 +35,46 @@ final class ProfileService {
 
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         task?.cancel()
-
         guard let request = makeProfileRequest(token: token) else {
             completion(.failure(URLError(.badURL)))
             return
         }
 
-        let task = urlSession.data(for: request) { [weak self] result in
-            switch result {
-            case .success(let data):
-                do {
-                    let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
-
-                    let profile = Profile(
-                        username: profileResult.username,
-                        name: profileResult.firstName,
-                        loginName: "@\(profileResult.username)",
-                        bio: profileResult.bio
-                    )
-                    self?.profile = profile
-                    completion(.success(profile))
-                } catch {
-                    completion(.failure(error))
-                }
-            case .failure(let error):
+        task = urlSession.dataTask(with: request) { [weak self] data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let data = data else {
+                completion(.failure(URLError(.badServerResponse)))
+                return
+            }
+            do {
+                print("print data")
+                print(data.base64EncodedString())
+                print("print data")
+                let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
+                let profile = Profile(
+                    username: profileResult.username,
+                    name: profileResult.firstName,
+                    loginName: "@(profileResult.username)",
+                    bio: profileResult.bio
+                )
+                self?.profile = profile
+                completion(.success(profile))
+            } catch {
+                print("Error decoding profile data: (error)")
                 completion(.failure(error))
             }
-            self?.task = nil
         }
-
-        self.task = task
-        task.resume()
+        task?.resume()
     }
 
     private func makeProfileRequest(token: String) -> URLRequest? {
-        guard let url = URL(string: "https://api.unsplash.com/me") else {
-            return nil
-        }
-
+        guard let url = URL(string: "https://api.unsplash.com/me") else { return nil }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
 }
-

@@ -16,6 +16,7 @@
 		7D9CFA4F28DDEE8000D971A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D9CFA4D28DDEE8000D971A7 /* LaunchScreen.storyboard */; };
 		891671E12EEB5CC2002673B1 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E648E92EEAD9FD00609ACB /* ProfileViewController.swift */; };
 		892B8DB22F2518DC003F1181 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892B8DB12F2518DC003F1181 /* WebKit.framework */; };
+		8956ACEF2F3E534B00F201FE /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 8956ACEE2F3E534B00F201FE /* SwiftKeychainWrapper */; };
 		8959F63C2F2A7956001B87E7 /* sprint11.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8959F6312F2A7955001B87E7 /* sprint11.framework */; };
 		8959F6462F2A7956001B87E7 /* sprint11.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8959F6312F2A7955001B87E7 /* sprint11.framework */; };
 		8959F6472F2A7956001B87E7 /* sprint11.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8959F6312F2A7955001B87E7 /* sprint11.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -112,6 +113,7 @@
 			files = (
 				8972E0702F2A7E9800411CA3 /* ProgressHUD in Frameworks */,
 				89DFFBBC2F328B7F00A64FF9 /* ProgressHUD in Frameworks */,
+				8956ACEF2F3E534B00F201FE /* SwiftKeychainWrapper in Frameworks */,
 				8959F6462F2A7956001B87E7 /* sprint11.framework in Frameworks */,
 				892B8DB22F2518DC003F1181 /* WebKit.framework in Frameworks */,
 				898773752F3CEDC500AF82E7 /* Kingfisher in Frameworks */,
@@ -393,6 +395,7 @@
 			packageReferences = (
 				89DFFBC42F3B6E6000A64FF9 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 				898773732F3CEDC500AF82E7 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				8956ACED2F3E534B00F201FE /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 			);
 			productRefGroup = 7D9CFA4028DDEE7F00D971A7 /* Products */;
 			projectDirPath = "";
@@ -872,6 +875,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8956ACED2F3E534B00F201FE /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
 		8972E06E2F2A7E9800411CA3 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
@@ -907,6 +918,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8956ACEE2F3E534B00F201FE /* SwiftKeychainWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8956ACED2F3E534B00F201FE /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
+			productName = SwiftKeychainWrapper;
+		};
 		8972E06F2F2A7E9800411CA3 /* ProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8972E06E2F2A7E9800411CA3 /* XCRemoteSwiftPackageReference "ProgressHUD" */;

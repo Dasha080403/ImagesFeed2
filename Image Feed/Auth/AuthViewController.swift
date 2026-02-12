@@ -60,7 +60,7 @@ extension AuthViewController: WebViewViewControllerDelegate{
             }
         UIBlockingProgressHUD.dismiss()
         }
-        vc.dismiss(animated: true)
+       // vc.dismiss(animated: true)
         
     }
     private func showErrorAlert(error: Error) {
