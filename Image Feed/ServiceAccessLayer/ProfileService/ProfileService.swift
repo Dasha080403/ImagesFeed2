@@ -50,9 +50,6 @@ final class ProfileService {
                 return
             }
             do {
-                print("print data")
-                print(data.base64EncodedString())
-                print("print data")
                 let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
                 let profile = Profile(
                     username: profileResult.username,

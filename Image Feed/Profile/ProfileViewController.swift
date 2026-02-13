@@ -10,67 +10,109 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var nameLabel: UILabel?
-    private var loginLabel: UILabel?
-    private var descriptionLabel: UILabel?
-    private var profileImageView: UIImageView? 
+    private var loginNameLabel: UILabel?
+    private var textLabel: UILabel?
+    private var avatarImageView: UIImageView!
     private var profileImageServiceObserver: NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupProfileImageView()
         setupNameLabel()
-        setupLoginLabels()
+        setupLabels()
         setupButton()
-        
+        avatarImageView = UIImageView()
+        updateAvatar()
+
         if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-            
-            profileImageServiceObserver = NotificationCenter.default.addObserver(forName: ProfileImageService.didChangeNotification, object: nil, queue: .main) {
-                [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvavtar()
-            }
-            updateAvavtar()
+                    updateProfileDetails(profile: profile)
+        }
+                
+        profileImageServiceObserver = NotificationCenter.default
+        .addObserver(
+        forName: ProfileImageService.didChangeNotification,
+        object: nil,
+        queue: .main
+        ) { [weak self] _ in
+        guard let self = self else { return }
+        self.updateAvatar()
         }
     }
 
-    private func updateAvavtar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL),
-            let imageView = profileImageView 
-        else { return }
-        
-        imageView.kf.setImage(with: url, placeholder: UIImage(resource: .userPhoto))
-    }
-    
-    private func updateProfileDetails(profile: Profile) {
-        nameLabel?.text = profile.name
-        loginLabel?.text = profile.loginName
-        descriptionLabel?.text = profile.bio
-    }
+private func updateAvatar() {
+    guard
+        let profileImageURL = ProfileImageService.shared.avatarURL,
+        let imageUrl = URL(string: profileImageURL)
+    else { return }
+
+    print("imageUrl: \(imageUrl)")
+
+    let placeholderImage = UIImage(systemName: "person.circle.fill")?
+        .withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+        .withConfiguration(UIImage.SymbolConfiguration(pointSize: 70, weight: .regular, scale: .large))
+
+    let processor = RoundCornerImageProcessor(cornerRadius: 35)
+    avatarImageView?.kf.indicatorType = .activity
+    avatarImageView?.kf.setImage(
+        with: imageUrl,
+        placeholder: placeholderImage,
+        options: [
+            .processor(processor),
+            .scaleFactor(UIScreen.main.scale),
+            .cacheOriginalImage,
+            .forceRefresh
+        ]) { result in
+
+            switch result {
+            
+            case .success(let value):
+                
+                print(value.image)
+
+                // Откуда картинка загружена:
+                // - .none — из сети.
+                // - .memory — из кэша оперативной памяти.
+                // - .disk — из дискового кэша.
+                print(value.cacheType)
+
+                // Информация об источнике.
+                print(value.source)
+
+                // В случае ошибки
+            case .failure(let error):
+                print(error)
+            }
+        }
+}
+
+private func updateProfileDetails(profile: Profile) {
+    nameLabel?.text = profile.name.isEmpty
+    ? "Имя не указано"
+    : profile.name
+    loginNameLabel?.text = profile.loginName.isEmpty
+    ? "@неизвестный_пользователь"
+    : profile.username
+    textLabel?.text = (profile.bio?.isEmpty ?? true)
+    ? "Профиль не заполнен"
+    : profile.bio
+}
 
     private func setupView() {
         view.backgroundColor = UIColor(resource: .ypBlack)
     }
 
-    private func setupProfileImageView() {
-        let profileImage = UIImage(resource: .userPhoto)
-        let imageView = UIImageView(image: profileImage)
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-
-        // Сохраняем ссылку на imageView
-        self.profileImageView = imageView
+    private func setupAvatarImageView() {
+        
+        avatarImageView.contentMode = .scaleAspectFit
+        avatarImageView.clipsToBounds = true
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(avatarImageView)
         
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            imageView.widthAnchor.constraint(equalToConstant: 70),
-            imageView.heightAnchor.constraint(equalToConstant: 70)
+        avatarImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+        avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+        avatarImageView.widthAnchor.constraint(equalToConstant: 70),
+        avatarImageView.heightAnchor.constraint(equalToConstant: 70)
         ])
     }
 
@@ -89,16 +131,18 @@ final class ProfileViewController: UIViewController {
         self.nameLabel = nameLabel
     }
 
-    private func setupLoginLabels() {
-        let loginLabel = UILabel()
-        loginLabel.textColor = UIColor(resource: .ypGray)
-        loginLabel.font = UIFont.systemFont(ofSize: 13)
-        loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loginLabel)
-
-        loginLabel.leadingAnchor.constraint(equalTo: nameLabel!.leadingAnchor).isActive = true
-        loginLabel.topAnchor.constraint(equalTo: nameLabel!.bottomAnchor, constant: 8).isActive = true
+    private func setupLabels() {
+        let loginNameLabel = UILabel()
+        loginNameLabel.textColor = UIColor(resource: .ypGray)
+        loginNameLabel.font = UIFont.systemFont(ofSize: 13)
+        loginNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loginNameLabel)
         
+        loginNameLabel.leadingAnchor.constraint(equalTo: nameLabel!.leadingAnchor).isActive = true
+        loginNameLabel.topAnchor.constraint(equalTo: nameLabel!.bottomAnchor, constant: 8).isActive = true
+        self.loginNameLabel = loginNameLabel
+    
+    
         let textLabel = UILabel()
         textLabel.textColor = UIColor(resource: .ypWhite)
         textLabel.font = .systemFont(ofSize: 13)
@@ -106,8 +150,10 @@ final class ProfileViewController: UIViewController {
         view.addSubview(textLabel)
 
         textLabel.leadingAnchor.constraint(equalTo: nameLabel!.leadingAnchor).isActive = true
-        textLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8).isActive = true
-    }
+        textLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8).isActive = true
+        self.textLabel = textLabel
+        }
+    
 
     private func setupButton() {
             let button = UIButton.systemButton(
