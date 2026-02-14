@@ -56,6 +56,7 @@ extension URLSession {
             switch result {
             case .success(let data):
                 if let jsonString = String(data: data, encoding: .utf8) {
+                    print(request.url?.absoluteString)
                     print("Полученные данные: \(jsonString)")
                 }
                 do {

@@ -16,7 +16,7 @@ struct Profile {
 struct ProfileResult: Codable {
     let username: String
     let firstName: String
-    let lastName: String
+    let lastName: String?
     let bio: String?
 
     private enum CodingKeys: String, CodingKey {
@@ -26,6 +26,7 @@ struct ProfileResult: Codable {
         case bio = "bio"
     }
 }
+
 
 final class ProfileService {
     static let shared = ProfileService()
@@ -41,32 +42,41 @@ final class ProfileService {
         }
 
         task = urlSession.dataTask(with: request) { [weak self] data, response, error in
+           
+            let fulfillCompletionOnMainThread: (Result<Profile, Error>) -> Void = { result in
+                DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
+
             if let error = error {
-                completion(.failure(error))
+                fulfillCompletionOnMainThread(.failure(error))
                 return
             }
+            
             guard let data = data else {
-                completion(.failure(URLError(.badServerResponse)))
+                fulfillCompletionOnMainThread(.failure(URLError(.badServerResponse)))
                 return
             }
+            
             do {
                 let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
                 let profile = Profile(
                     username: profileResult.username,
-                    name: profileResult.firstName,
-                    loginName: "@(profileResult.username)",
+                    name: "\(profileResult.firstName) \(profileResult.lastName ?? "")".trimmingCharacters(in: .whitespaces),
+                    loginName: "@\(profileResult.username)",
                     bio: profileResult.bio
                 )
                 self?.profile = profile
-                completion(.success(profile))
+                fulfillCompletionOnMainThread(.success(profile))
             } catch {
-                print("Error decoding profile data: (error)")
-                completion(.failure(error))
+                print("Ошибка декодирования: \(error)")
+                fulfillCompletionOnMainThread(.failure(error))
             }
         }
         task?.resume()
     }
-
+    
     private func makeProfileRequest(token: String) -> URLRequest? {
         guard let url = URL(string: "https://api.unsplash.com/me") else { return nil }
         var request = URLRequest(url: url)

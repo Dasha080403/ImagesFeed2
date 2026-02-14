@@ -20,7 +20,7 @@ final class ProfileViewController: UIViewController {
     }()
 
     private var nameLabel: UILabel?
-    private var loginNameLabel: UILabel?
+    private var loginLabel: UILabel?
     private var textLabel: UILabel?
     private var profileImageServiceObserver: NSObjectProtocol?
 
@@ -98,7 +98,7 @@ final class ProfileViewController: UIViewController {
             textLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8)
         ])
         
-        self.loginNameLabel = loginLabel
+        self.loginLabel = loginLabel
         self.textLabel = textLabel
     }
 
@@ -121,30 +121,28 @@ final class ProfileViewController: UIViewController {
     }
 
     private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-
-        let processor = RoundCornerImageProcessor(cornerRadius: 35)
-        
-        avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(
-            with: url,
-            placeholder: UIImage(named: "person.crop.circle.fill"),
-            options: [
-                .processor(processor),
-                .transition(.fade(1)),
-                .cacheSerializer(DefaultCacheSerializer.default)
-            ]
-        )
+            guard
+                let profileImageURL = ProfileImageService.shared.avatarURL,
+                let url = URL(string: profileImageURL)
+            else {
+                print("DEBUG: URL аватарки пуст, используем заглушку")
+                return
+            }
+            
+            
+            let processor = RoundCornerImageProcessor(cornerRadius: 35)
+            avatarImageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "person.crop.circle.fill"), 
+                options: [.processor(processor)]
+            )
     }
 
     private func updateProfileDetails(profile: Profile) {
-        nameLabel?.text = profile.name.isEmpty
+        nameLabel?.text = profile.username.isEmpty
         ? "Имя не указано"
         : profile.name
-        loginNameLabel?.text = profile.username.isEmpty
+        loginLabel?.text = profile.loginName.isEmpty
         ? "@неизвестный_пользователь"
         : profile.loginName
         textLabel?.text = (profile.bio?.isEmpty ?? true)
