@@ -5,6 +5,8 @@
 //  Created by Дарья Савинкина on 14.02.2026.
 //
 
+import UIKit
+
 final class TabBarController: UITabBarController {
        override func awakeFromNib() {
            super.awakeFromNib()
@@ -12,8 +14,8 @@ final class TabBarController: UITabBarController {
            let imagesListViewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController")
            let profileViewController = ProfileViewController()
            profileViewController.tabBarItem = UITabBarItem(
-               title: "", // если подпись не нужна, оставьте пустую строку
-               image: UIImage(named: "tab_profile_active"),
+               title: "", 
+               image: UIImage(named: "Active"),
                selectedImage: nil
            )
            self.viewControllers = [imagesListViewController, profileViewController]

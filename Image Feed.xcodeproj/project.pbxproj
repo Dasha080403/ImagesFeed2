@@ -17,6 +17,7 @@
 		891671E12EEB5CC2002673B1 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89E648E92EEAD9FD00609ACB /* ProfileViewController.swift */; };
 		892B8DB22F2518DC003F1181 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 892B8DB12F2518DC003F1181 /* WebKit.framework */; };
 		8952CA1B2F40C2D3006F13C9 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8952CA1A2F40C2B8006F13C9 /* TabBarController.swift */; };
+		8952CA1D2F40C6DE006F13C9 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8952CA1C2F40C6D2006F13C9 /* SplashView.swift */; };
 		8956ACEF2F3E534B00F201FE /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 8956ACEE2F3E534B00F201FE /* SwiftKeychainWrapper */; };
 		8959F63C2F2A7956001B87E7 /* sprint11.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8959F6312F2A7955001B87E7 /* sprint11.framework */; };
 		8959F6462F2A7956001B87E7 /* sprint11.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8959F6312F2A7955001B87E7 /* sprint11.framework */; };
@@ -87,6 +88,7 @@
 		7D9CFA5028DDEE8000D971A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		892B8DB12F2518DC003F1181 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8952CA1A2F40C2B8006F13C9 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		8952CA1C2F40C6D2006F13C9 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		8959F6312F2A7955001B87E7 /* sprint11.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = sprint11.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8959F63B2F2A7956001B87E7 /* sprint11Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = sprint11Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		89982EE02EF2E6F60048B077 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 		89A301272F250E980006A90E /* SplashViewController */ = {
 			isa = PBXGroup;
 			children = (
+				8952CA1C2F40C6D2006F13C9 /* SplashView.swift */,
 				89A301282F250EAB0006A90E /* SplashViewController.swift */,
 			);
 			path = SplashViewController;
@@ -468,6 +471,7 @@
 				89A301242F250E600006A90E /* OAuth2Service.swift in Sources */,
 				89A3011F2F24E96C0006A90E /* Constants.swift in Sources */,
 				89DFFBB82F30D28B00A64FF9 /* ProfileService.swift in Sources */,
+				8952CA1D2F40C6DE006F13C9 /* SplashView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
