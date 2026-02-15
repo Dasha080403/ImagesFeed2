@@ -15,8 +15,8 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    @IBOutlet weak var logImage: UIImageView!
-    @IBOutlet weak var logButton: UIButton!
+    @IBOutlet private weak var logImage: UIImageView!
+    @IBOutlet private weak var logButton: UIButton!
     private let showWebViewSegueIdentifier = "ShowWebView"
     private let oauth2Service = OAuth2Service.shared
     private var isAuthenticating = false
@@ -40,8 +40,8 @@ final class AuthViewController: UIViewController {
     }
     
     private func configureBackButton() {
-        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
+        navigationController?.navigationBar.backIndicatorImage = UIImage(resource: .backButton)
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(resource: .backButton)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(resource: .ypBlack)
     }
@@ -49,29 +49,21 @@ final class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate{
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        UIBlockingProgressHUD.show()
+        guard !isAuthenticating else { return }
+        isAuthenticating = true
         fetchOAuthToken(code) { [weak self] result in
-            guard let self else { return }
+            guard let self = self else { return }
+            
             switch result {
             case .success:
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 self.showErrorAlert(error: error)
             }
-            UIBlockingProgressHUD.dismiss()
-        }
-        // vc.dismiss(animated: true)
-        
-    }
-    private func showErrorAlert(error: Error) {
-        let alertController = UIAlertController(title: "Что-то пошло не так", message: "Не удалось войти в систему: (error.localizedDescription)", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        
-        DispatchQueue.main.async {
-            self.present(alertController, animated: true, completion: nil)
+            vc.dismiss(animated: true)
         }
     }
+    
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
         
