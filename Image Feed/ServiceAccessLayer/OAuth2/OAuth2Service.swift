@@ -67,9 +67,8 @@ final class OAuth2Service {
                     DispatchQueue.main.async {
                         completion(.failure(decodingError))
                     }
-                case .failure(let error):
-                    self.completeWithError(code: code, error: error)
                 }
+                
             case .failure(let error):
                 self.logError(error)
                 DispatchQueue.main.async {
@@ -95,7 +94,6 @@ final class OAuth2Service {
                 return
             }
             
-            // Проверка кода ответа
             if (300..<400).contains(response.statusCode) {
                 let errorMessage = String(data: data ?? Data(), encoding: .utf8) ?? "Unknown error"
                 let serviceError = NetworkError.serviceError(code: response.statusCode, message: errorMessage)
