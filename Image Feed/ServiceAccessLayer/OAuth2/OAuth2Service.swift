@@ -21,6 +21,9 @@ final class OAuth2Service {
     static let unsplashTokenURL = "https://unsplash.com/oauth/token"
     private let jsonDecoder = JSONDecoder()
     
+    private var ongoingRequests: [String: (Result<String, Error>) -> Void] = [:]
+    private let queue = DispatchQueue(label: "OAuth2ServiceQueue")
+    
     private init() { }
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -64,6 +67,8 @@ final class OAuth2Service {
                     DispatchQueue.main.async {
                         completion(.failure(decodingError))
                     }
+                case .failure(let error):
+                    self.completeWithError(code: code, error: error)
                 }
             case .failure(let error):
                 self.logError(error)

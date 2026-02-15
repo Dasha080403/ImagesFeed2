@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import ProgressHUD
 
 
 protocol AuthViewControllerDelegate: AnyObject {
@@ -56,9 +57,8 @@ extension AuthViewController: WebViewViewControllerDelegate{
             switch result {
             case .success:
                 self.delegate?.didAuthenticate(self)
-            case .failure:
-                // TODO [Sprint 11] Добавьте обработку ошибки
-                break
+            case .failure(let error):
+                self.showErrorAlert(error: error)
             }
             vc.dismiss(animated: true)
         }
@@ -66,6 +66,7 @@ extension AuthViewController: WebViewViewControllerDelegate{
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
+        
     }
 }
 
