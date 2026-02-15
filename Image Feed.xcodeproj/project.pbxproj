@@ -106,7 +106,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8959F6322F2A7955001B87E7 /* sprint11 */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = sprint11; sourceTree = "<group>"; };
 		8959F6412F2A7956001B87E7 /* sprint11Tests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = sprint11Tests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -147,7 +146,6 @@
 			children = (
 				8952CA192F40C28E006F13C9 /* TabBarController */,
 				7D9CFA4128DDEE7F00D971A7 /* Image Feed */,
-				8959F6322F2A7955001B87E7 /* sprint11 */,
 				8959F6412F2A7956001B87E7 /* sprint11Tests */,
 				892B8DB02F2518DB003F1181 /* Frameworks */,
 				7D9CFA4028DDEE7F00D971A7 /* Products */,
@@ -340,9 +338,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				8959F6322F2A7955001B87E7 /* sprint11 */,
 			);
 			name = sprint11;
 			packageProductDependencies = (

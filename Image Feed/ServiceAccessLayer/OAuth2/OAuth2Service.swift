@@ -22,7 +22,7 @@ final class OAuth2Service {
     
     private var ongoingRequests: [String: (Result<String, Error>) -> Void] = [:]
     private let queue = DispatchQueue(label: "OAuth2ServiceQueue")
-
+    
     private init() { }
     
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -57,7 +57,7 @@ final class OAuth2Service {
             
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
-
+            
             fetchData(with: request) { result in
                 switch result {
                 case .success(let data):
@@ -97,7 +97,7 @@ final class OAuth2Service {
             }
         }
     }
-
+    
     private func fetchData(with request: URLRequest, completion: @escaping (Result<Data, Error>) -> Void) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -121,7 +121,7 @@ final class OAuth2Service {
         
         task.resume()
     }
-
+    
     private enum NetworkError: Error {
         case codeError
     }

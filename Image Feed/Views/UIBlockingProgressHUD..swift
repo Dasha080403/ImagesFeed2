@@ -11,7 +11,7 @@ import ProgressHUD
 final class UIBlockingProgressHUD{
     
     private static var window: UIWindow?{
-    return UIApplication.shared.windows.first
+    UIApplication.shared.windows.first
     }
     
     @MainActor static func show(){

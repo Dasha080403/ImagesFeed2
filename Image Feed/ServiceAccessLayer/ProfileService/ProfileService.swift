@@ -18,7 +18,7 @@ struct ProfileResult: Codable {
     let firstName: String
     let lastName: String?
     let bio: String?
-
+    
     private enum CodingKeys: String, CodingKey {
         case username = "username"
         case firstName = "first_name"
@@ -27,28 +27,29 @@ struct ProfileResult: Codable {
     }
 }
 
-
 final class ProfileService {
     static let shared = ProfileService()
+    private init() {}
+    
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
     private(set) var profile: Profile?
-
+    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         task?.cancel()
+        
         guard let request = makeProfileRequest(token: token) else {
             completion(.failure(URLError(.badURL)))
             return
         }
-
+        
         task = urlSession.dataTask(with: request) { [weak self] data, response, error in
-           
             let fulfillCompletionOnMainThread: (Result<Profile, Error>) -> Void = { result in
                 DispatchQueue.main.async {
                     completion(result)
                 }
             }
-
+            
             if let error = error {
                 fulfillCompletionOnMainThread(.failure(error))
                 return
@@ -61,16 +62,22 @@ final class ProfileService {
             
             do {
                 let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
+                
+                let name = [profileResult.firstName, profileResult.lastName]
+                    .compactMap { $0 }
+                    .joined(separator: " ")
+                
                 let profile = Profile(
                     username: profileResult.username,
-                    name: "\(profileResult.firstName) \(profileResult.lastName ?? "")".trimmingCharacters(in: .whitespaces),
+                    name: name,
                     loginName: "@\(profileResult.username)",
                     bio: profileResult.bio
                 )
+                
                 self?.profile = profile
                 fulfillCompletionOnMainThread(.success(profile))
+                
             } catch {
-                print("Ошибка декодирования: \(error)")
                 fulfillCompletionOnMainThread(.failure(error))
             }
         }

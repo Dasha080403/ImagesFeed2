@@ -27,16 +27,16 @@ final class AuthViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
-             guard
-                    let webViewViewController = segue.destination as? WebViewViewController
-                else {
-                    assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
-                    return
-                }
-                webViewViewController.delegate = self
-            } else {
-                super.prepare(for: segue, sender: sender)
+            guard
+                let webViewViewController = segue.destination as? WebViewViewController
+            else {
+                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
+                return
             }
+            webViewViewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
     }
     
     private func configureBackButton() {
@@ -50,31 +50,31 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate{
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
-    fetchOAuthToken(code) { [weak self] result in
-            guard let self = self else { return }
+        fetchOAuthToken(code) { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success:
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 self.showErrorAlert(error: error)
             }
-        UIBlockingProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
         }
-       // vc.dismiss(animated: true)
+        // vc.dismiss(animated: true)
         
     }
     private func showErrorAlert(error: Error) {
-    let alertController = UIAlertController(title: "Что-то пошло не так", message: "Не удалось войти в систему: (error.localizedDescription)", preferredStyle: .alert)
-    let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
-    alertController.addAction(okAction)
-            
-    DispatchQueue.main.async {
-    self.present(alertController, animated: true, completion: nil)
-            }
+        let alertController = UIAlertController(title: "Что-то пошло не так", message: "Не удалось войти в систему: (error.localizedDescription)", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
         }
+    }
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
-       
+        
     }
 }
 

@@ -9,7 +9,7 @@ import UIKit
 
 final class SplashViewController: UIViewController {
     
-    private let storage = OAuth2TokenStorage()
+    private let storage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     
     override func loadView() {
@@ -34,7 +34,7 @@ final class SplashViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
- 
+    
     private func showAuthController() {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         guard let authViewController = storyboard.instantiateViewController(
