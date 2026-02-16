@@ -8,72 +8,114 @@ import Foundation
 
 final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    static let shared = ImagesListService()
     
-    private (set) var photos: [Photo] = []
+    private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
-    private var task: URLSessionTask?
+    
+    private var fetchTask: URLSessionTask?
+    private var likeTask: URLSessionTask?
     
     private let urlSession = URLSession.shared
-    private let jsonDecoder = JSONDecoder()
+    private let dateFormatter = ISO8601DateFormatter()
     
+    private init() {}
 
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
-        if task != nil { return }
+        if fetchTask != nil { return }
         
         let nextPage = (lastLoadedPage ?? 0) + 1
         
         guard let request = makePhotosRequest(page: nextPage) else {
-            print("Error: Invalid request")
             return
         }
         
         let task = urlSession.dataTask(with: request) { [weak self] data, response, error in
-            guard let self = self else { return }
-            
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.fetchTask = nil
+                
                 if let error = error {
                     print("Error fetching photos: \(error)")
-                    self.task = nil
                     return
                 }
                 
-                guard let data = data else {
-                    self.task = nil
-                    return
-                }
+                guard let data = data else { return }
                 
                 do {
-                    let photoResults = try self.jsonDecoder.decode([PhotoResult].self, from: data)
-                  
+                    let decoder = JSONDecoder()
+                    let photoResults = try decoder.decode([PhotoResult].self, from: data)
+                    
                     let newPhotos = photoResults.map { Photo(from: $0) }
                     
-                    // Обновляем данные
                     self.photos.append(contentsOf: newPhotos)
                     self.lastLoadedPage = nextPage
-                    self.task = nil
                     
                     NotificationCenter.default.post(
                         name: ImagesListService.didChangeNotification,
                         object: self
                     )
-                    
                 } catch {
                     print("Decoding error: \(error)")
-                    self.task = nil
                 }
             }
         }
         
-        self.task = task
+        self.fetchTask = task
         task.resume()
     }
-}
-
-
-private extension ImagesListService {
-    func makePhotosRequest(page: Int) -> URLRequest? {
-        guard var urlComponents = URLComponents(string: "https://api.unsplash.com/photos") else { return nil }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        likeTask?.cancel()
+        
+        guard let url = URL(string: "https://api.unsplash.com/photos/\(photoId)/like") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        
+        if let token = OAuth2TokenStorage.shared.token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        
+        let task = urlSession.dataTask(with: request) { [weak self] _, response, error in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.likeTask = nil
+                
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let photo = self.photos[index]
+                    let newPhoto = Photo(
+                        id: photo.id,
+                        size: photo.size,
+                        createdAt: photo.createdAt,
+                        welcomeDescription: photo.welcomeDescription,
+                        thumbImageURL: photo.thumbImageURL,
+                        largeImageURL: photo.largeImageURL,
+                        isLiked: !photo.isLiked
+                    )
+                    self.photos[index] = newPhoto
+                }
+                
+                completion(.success(()))
+            }
+        }
+        
+        self.likeTask = task
+        task.resume()
+    }
+    
+    private func makePhotosRequest(page: Int) -> URLRequest? {
+        let urlString = "https://api.unsplash.com/photos"
+        guard var urlComponents = URLComponents(string: urlString) else { return nil }
+        
         urlComponents.queryItems = [
             URLQueryItem(name: "page", value: "\(page)"),
             URLQueryItem(name: "per_page", value: "10")
@@ -81,15 +123,16 @@ private extension ImagesListService {
         
         guard let url = urlComponents.url else { return nil }
         var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         
-        // if let token = OAuth2TokenStorage.shared.token {
-        //    request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        // }
-        
+        if let token = OAuth2TokenStorage.shared.token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         return request
     }
 }
 
+// MARK: - Models
 
 struct Photo {
     let id: String
@@ -99,6 +142,16 @@ struct Photo {
     let thumbImageURL: String
     let largeImageURL: String
     let isLiked: Bool
+    
+    init(id: String, size: CGSize, createdAt: Date?, welcomeDescription: String?, thumbImageURL: String, largeImageURL: String, isLiked: Bool) {
+        self.id = id
+        self.size = size
+        self.createdAt = createdAt
+        self.welcomeDescription = welcomeDescription
+        self.thumbImageURL = thumbImageURL
+        self.largeImageURL = largeImageURL
+        self.isLiked = isLiked
+    }
     
     init(from result: PhotoResult) {
         self.id = result.id
@@ -121,9 +174,8 @@ struct PhotoResult: Codable {
     let likedByUser: Bool
     
     enum CodingKeys: String, CodingKey {
-        case id, width, height, description
+        case id, width, height, description, urls
         case createdAt = "created_at"
-        case urls
         case likedByUser = "liked_by_user"
     }
 }
