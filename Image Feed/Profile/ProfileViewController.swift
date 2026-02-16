@@ -150,5 +150,10 @@ final class ProfileViewController: UIViewController {
         : profile.bio
     }
 
-    @objc private func didTapButton() { }
+    @objc private func didTapButton() {
+        ProfileLogoutService.shared.logout()
+            guard let window = UIApplication.shared.windows.first else { return }
+            let splashViewController = SplashViewController()
+            window.rootViewController = splashViewController
+    }
 }

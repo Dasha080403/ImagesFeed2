@@ -35,6 +35,11 @@ final class ProfileImageService {
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
 
+    func clearAvatarURL() {
+        avatarURL = nil
+    }
+
+    
     func fetchProfileImageURL(username: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         assert(Thread.isMainThread)

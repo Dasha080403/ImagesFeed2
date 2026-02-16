@@ -20,6 +20,12 @@ final class ImagesListService {
     private let dateFormatter = ISO8601DateFormatter()
     
     private init() {}
+    
+    func clearPhotos() {
+        photos = []
+        lastLoadedPage = nil 
+    }
+
 
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
