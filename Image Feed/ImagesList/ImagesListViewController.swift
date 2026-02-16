@@ -103,29 +103,13 @@ extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
         cell.delegate = self
+       
+        let dateString = photo.createdAt != nil ? dateFormatter.string(from: photo.createdAt!) : ""
         
-        if let url = URL(string: photo.thumbImageURL) {
-            cell.cellImage.kf.indicatorType = .activity
-            cell.cellImage.kf.setImage(
-                with: url,
-                placeholder: UIImage(named: "like_button_on")
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
-        }
-        
-        if let createdAt = photo.createdAt {
-            cell.dateLabel.text = dateFormatter.string(from: createdAt)
-        } else {
-            cell.dateLabel.text = ""
-        }
-        
-        let isLiked = photo.isLiked
-        let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
-        cell.likeButton.setImage(likeImage, for: .normal)
+        cell.configure(with: photo, dateString: dateString)
     }
 }
+
 
 // MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {

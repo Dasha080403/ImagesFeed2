@@ -10,6 +10,37 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
+    private var nameLabel: UILabel?
+    private var loginLabel: UILabel?
+    private var textLabel: UILabel?
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    private var gradientLayers = Set<CAGradientLayer>()
+        private func showSkeleton() {
+            let views: [UIView] = [avatarImageView, nameLabel, loginLabel, textLabel].compactMap { $0 }
+            
+            views.forEach { view in
+                let gradient = SkeletonFactory.makeGradientLayer(for: view)
+                view.layer.addSublayer(gradient)
+                gradientLayers.insert(gradient)
+            }
+    }
+        private func hideSkeleton() {
+            gradientLayers.forEach { $0.removeFromSuperlayer() }
+            gradientLayers.removeAll()
+        }
+
+        override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+                    gradientLayers.forEach { gradient in
+                        if let hostView = gradient.superlayer?.delegate as? UIView {
+                            gradient.frame = hostView.bounds
+                        } else {
+                            gradient.frame = gradient.superlayer?.bounds ?? .zero
+                        }
+                    }
+        }
+    
     private let avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -19,30 +50,29 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
 
-    private var nameLabel: UILabel?
-    private var loginLabel: UILabel?
-    private var textLabel: UILabel?
-    private var profileImageServiceObserver: NSObjectProtocol?
+  
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
-        setupAvatarImageView()
-        setupNameLabel()
-        setupLabels()
-        setupButton()
-        updateAvatar()
-        if let profile = ProfileService.shared.profile {
-            updateProfileDetails(profile: profile)
-        }
-                
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.updateAvatar()
-        }
+               setupView()
+               setupAvatarImageView()
+               setupNameLabel()
+               setupLabels()
+               setupButton()
+               
+               showSkeleton()
+               if let profile = ProfileService.shared.profile {
+                   updateProfileDetails(profile: profile)
+               }
+                       
+               profileImageServiceObserver = NotificationCenter.default.addObserver(
+                   forName: ProfileImageService.didChangeNotification,
+                   object: nil,
+                   queue: .main
+               ) { [weak self] _ in
+                   self?.updateAvatar()
+               }
+               updateAvatar()
     }
 
     private func setupView() {
@@ -121,21 +151,29 @@ final class ProfileViewController: UIViewController {
     }
 
     private func updateAvatar() {
-            guard
-                let profileImageURL = ProfileImageService.shared.avatarURL,
-                let url = URL(string: profileImageURL)
-            else {
-                print("DEBUG: URL аватарки пуст, используем заглушку")
-                return
-            }
-            
-            
-            let processor = RoundCornerImageProcessor(cornerRadius: 35)
-            avatarImageView.kf.setImage(
-                with: url,
-                placeholder: UIImage(named: "person.crop.circle.fill"), 
-                options: [.processor(processor)]
-            )
+        guard
+                    let profileImageURL = ProfileImageService.shared.avatarURL,
+                    let url = URL(string: profileImageURL)
+                else {
+                    return
+                }
+                
+                let processor = RoundCornerImageProcessor(cornerRadius: 35)
+                
+                avatarImageView.kf.setImage(
+                    with: url,
+                    placeholder: UIImage(named: "person.crop.circle.fill"),
+                    options: [.processor(processor)]
+                ) { [weak self] result in
+                    self?.hideSkeleton()
+                    
+                    switch result {
+                    case .success(let value):
+                        print("DEBUG: Аватар успешно загружен: \(value.source.url?.absoluteString ?? "")")
+                    case .failure(let error):
+                        print("DEBUG: Ошибка загрузки аватара: \(error)")
+                    }
+                }
     }
 
     private func updateProfileDetails(profile: Profile) {

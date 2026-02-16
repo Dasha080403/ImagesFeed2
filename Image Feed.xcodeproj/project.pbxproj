@@ -33,6 +33,7 @@
 		89A301262F250E740006A90E /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A301252F250E640006A90E /* OAuth2TokenStorage.swift */; };
 		89A301292F250EAD0006A90E /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A301282F250EAB0006A90E /* SplashViewController.swift */; };
 		89C4F9412F4345B10004FA7C /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C4F9402F4345AE0004FA7C /* ProfileLogoutService.swift */; };
+		89C4F9442F4397F00004FA7C /* SkeletonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C4F9422F43636C0004FA7C /* SkeletonFactory.swift */; };
 		89DFFBAF2F2BFB3800A64FF9 /* UIBlockingProgressHUD..swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFFBAE2F2BFB2C00A64FF9 /* UIBlockingProgressHUD..swift */; };
 		89DFFBB82F30D28B00A64FF9 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DFFBB72F30D28700A64FF9 /* ProfileService.swift */; };
 		89DFFBBC2F328B7F00A64FF9 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 89DFFBBB2F328B7F00A64FF9 /* ProgressHUD */; };
@@ -110,6 +111,7 @@
 		89A301252F250E640006A90E /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		89A301282F250EAB0006A90E /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		89C4F9402F4345AE0004FA7C /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
+		89C4F9422F43636C0004FA7C /* SkeletonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonFactory.swift; sourceTree = "<group>"; };
 		89DFFBAE2F2BFB2C00A64FF9 /* UIBlockingProgressHUD..swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD..swift; sourceTree = "<group>"; };
 		89DFFBB72F30D28700A64FF9 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		89DFFBBE2F328E3D00A64FF9 /* URLSession+data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+data.swift"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		7D9CFA3628DDEE7F00D971A7 = {
 			isa = PBXGroup;
 			children = (
+				89C4F9422F43636C0004FA7C /* SkeletonFactory.swift */,
 				8952CA192F40C28E006F13C9 /* TabBarController */,
 				7D9CFA4128DDEE7F00D971A7 /* Image Feed */,
 				8952CA2C2F422259006F13C9 /* Image FeedTests */,
@@ -427,6 +430,7 @@
 					};
 					8952CA2A2F422259006F13C9 = {
 						CreatedOnToolsVersion = 26.2;
+						LastSwiftMigration = 2620;
 						TestTargetID = 7D9CFA3E28DDEE7F00D971A7;
 					};
 					8959F6302F2A7955001B87E7 = {
@@ -505,6 +509,7 @@
 			files = (
 				891671E12EEB5CC2002673B1 /* ProfileViewController.swift in Sources */,
 				7D9CFA4328DDEE7F00D971A7 /* AppDelegate.swift in Sources */,
+				89C4F9442F4397F00004FA7C /* SkeletonFactory.swift in Sources */,
 				7D9CFA4528DDEE7F00D971A7 /* SceneDelegate.swift in Sources */,
 				89A301292F250EAD0006A90E /* SplashViewController.swift in Sources */,
 				89DFFBAF2F2BFB3800A64FF9 /* UIBlockingProgressHUD..swift in Sources */,
@@ -776,6 +781,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -790,6 +796,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -803,6 +810,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
