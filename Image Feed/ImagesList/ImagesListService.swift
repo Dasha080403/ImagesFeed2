@@ -17,7 +17,6 @@ final class ImagesListService {
     private var likeTask: URLSessionTask?
     
     private let urlSession = URLSession.shared
-    private let dateFormatter = ISO8601DateFormatter()
     
     private init() {}
     
@@ -142,32 +141,40 @@ final class ImagesListService {
 
 struct Photo {
     let id: String
-    let size: CGSize
-    let createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let isLiked: Bool
-    
-    init(id: String, size: CGSize, createdAt: Date?, welcomeDescription: String?, thumbImageURL: String, largeImageURL: String, isLiked: Bool) {
-        self.id = id
-        self.size = size
-        self.createdAt = createdAt
-        self.welcomeDescription = welcomeDescription
-        self.thumbImageURL = thumbImageURL
-        self.largeImageURL = largeImageURL
-        self.isLiked = isLiked
-    }
-    
-    init(from result: PhotoResult) {
-        self.id = result.id
-        self.size = CGSize(width: result.width, height: result.height)
-        self.createdAt = ISO8601DateFormatter().date(from: result.createdAt ?? "")
-        self.welcomeDescription = result.description
-        self.thumbImageURL = result.urls.thumb
-        self.largeImageURL = result.urls.full
-        self.isLiked = result.likedByUser
-    }
+        let size: CGSize
+        let createdAt: Date?
+        let welcomeDescription: String?
+        let thumbImageURL: String
+        let largeImageURL: String
+        let isLiked: Bool
+        
+        static let iso8601Formatter = ISO8601DateFormatter()
+
+        init(id: String, size: CGSize, createdAt: Date?, welcomeDescription: String?, thumbImageURL: String, largeImageURL: String, isLiked: Bool) {
+            self.id = id
+            self.size = size
+            self.createdAt = createdAt
+            self.welcomeDescription = welcomeDescription
+            self.thumbImageURL = thumbImageURL
+            self.largeImageURL = largeImageURL
+            self.isLiked = isLiked
+        }
+        
+        init(from result: PhotoResult) {
+            self.id = result.id
+            self.size = CGSize(width: result.width, height: result.height)
+            
+            if let dateString = result.createdAt {
+                self.createdAt = Photo.iso8601Formatter.date(from: dateString)
+            } else {
+                self.createdAt = nil
+            }
+            
+            self.welcomeDescription = result.description
+            self.thumbImageURL = result.urls.thumb
+            self.largeImageURL = result.urls.full
+            self.isLiked = result.likedByUser
+        }
 }
 
 struct PhotoResult: Codable {

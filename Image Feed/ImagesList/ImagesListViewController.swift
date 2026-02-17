@@ -102,11 +102,9 @@ extension ImagesListViewController: UITableViewDataSource {
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
-        cell.delegate = self
-       
-        let dateString = photo.createdAt != nil ? dateFormatter.string(from: photo.createdAt!) : ""
-        
-        cell.configure(with: photo, dateString: dateString)
+           cell.delegate = self
+           let dateString = photo.createdAt.map { dateFormatter.string(from: $0) } ?? ""
+           cell.configure(with: photo, dateString: dateString)
     }
 }
 
