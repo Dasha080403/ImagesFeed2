@@ -65,15 +65,15 @@ final class ProfileViewTests: XCTestCase {
     func testViewControllerCallsViewDidLoad() {
         // given
         let viewController = ProfileViewController()
-        let presenter = ProfilePresenterSpy()
-        viewController.presenter = presenter
-        presenter.view = viewController
+        let presenterProtocol = ProfilePresenterSpy()
+        viewController.presenterProtocol = presenterProtocol
+        presenterProtocol.view = viewController
         
         // when
         _ = viewController.view
         
         // then
-        XCTAssertTrue(presenter.viewDidLoadCalled)
+        XCTAssertTrue(presenterProtocol.viewDidLoadCalled)
     }
 
     func testPresenterCallsShowSkeleton() {
@@ -103,18 +103,17 @@ final class ProfileViewTests: XCTestCase {
         XCTAssertTrue(viewController.displayProfileDetailsCalled)
     }
 
-    // 4. Тест: Презентер обрабатывает нажатие кнопки выхода
     func testPresenterCallsLogout() {
         // given
         let viewController = ProfileViewController()
-        let presenter = ProfilePresenterSpy()
-        viewController.presenter = presenter
+        let presenterProtocol = ProfilePresenterSpy()
+        viewController.presenterProtocol = presenterProtocol
         
         // when
-        presenter.didTapLogout()
+        presenterProtocol.didTapLogout()
         
         // then
-        XCTAssertTrue(presenter.didTapLogoutCalled)
+        XCTAssertTrue(presenterProtocol.didTapLogoutCalled)
     }
     
     // 5. Тест: Передача URL аватара во View

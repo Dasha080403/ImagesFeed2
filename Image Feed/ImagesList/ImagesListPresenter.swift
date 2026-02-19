@@ -22,7 +22,7 @@ final class ImagesListPresenter: ImagesListViewOutput {
     init(imagesListService: ImagesListServiceProtocol = ImagesListService.shared) {
         self.imagesListService = imagesListService
     }
-
+    
     // MARK: - ImagesListViewOutput
     
     func viewDidLoad() {
@@ -33,9 +33,9 @@ final class ImagesListPresenter: ImagesListViewOutput {
         ) { [weak self] _ in
             self?.updatePhotosArray()
         }
+        
         imagesListService.fetchPhotosNextPage()
-            
-            updatePhotosArray()
+        
     }
     
     func getPhotosCount() -> Int {
@@ -62,35 +62,34 @@ final class ImagesListPresenter: ImagesListViewOutput {
     }
     
     func didTapLike(at indexPath: IndexPath) {
-            guard photos.indices.contains(indexPath.row) else { return }
+        guard photos.indices.contains(indexPath.row) else { return }
+        
+        let photo = photos[indexPath.row]
+        let photoId = photo.id
+        let isLike = !photo.isLiked
+        
+        view?.showProgressHUD()
+        
+        imagesListService.changeLike(photoId: photoId, isLike: isLike) { [weak self] result in
+            guard let self = self else { return }
+            self.view?.hideProgressHUD()
             
-            let photo = photos[indexPath.row]
-            let photoId = photo.id
-            let isLike = !photo.isLiked
-            
-            view?.showProgressHUD()
-            
-            imagesListService.changeLike(photoId: photoId, isLike: isLike) { [weak self] result in
-                guard let self = self else { return }
-                self.view?.hideProgressHUD()
+            switch result {
+            case .success:
+                self.photos = self.imagesListService.photos
                 
-                switch result {
-                case .success:
-                    self.photos = self.imagesListService.photos
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    let newIndexPath = IndexPath(row: index, section: 0)
                     
-                    if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-                        let newIndexPath = IndexPath(row: index, section: 0)
-                        
-                        self.view?.setCellLikeState(at: newIndexPath, isLiked: self.photos[index].isLiked)
-                    }
-                    
-                case .failure:
-                    self.view?.showError(message: "Не удалось изменить лайк")
+                    self.view?.setCellLikeState(at: newIndexPath, isLiked: self.photos[index].isLiked)
                 }
+                
+            case .failure:
+                self.view?.showError(message: "Не удалось изменить лайк")
             }
+        }
     }
     
-    // 7. Обязательный метод из протокола
     func willDisplayCell(at indexPath: IndexPath) {
         if indexPath.row + 1 == photos.count {
             imagesListService.fetchPhotosNextPage()
@@ -104,8 +103,9 @@ final class ImagesListPresenter: ImagesListViewOutput {
         let newPhotos = imagesListService.photos
         let newCount = newPhotos.count
         
-        if newCount > oldCount { 
+        if newCount > oldCount {
             self.photos = newPhotos
+            
             view?.updateTableViewAnimated(oldCount: oldCount, newCount: newCount)
         }
     }
