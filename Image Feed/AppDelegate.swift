@@ -1,14 +1,26 @@
 import UIKit
+import WebKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // ПРОВЕРКА ФЛАГА ИЗ ТЕСТА
+        if CommandLine.arguments.contains("RESET_APP") {
+            // 1. Сброс токена через ваш существующий класс
+            OAuth2TokenStorage.shared.token = nil
+            
+            // 2. Сброс кук WebView (чтобы Unsplash забыл логин)
+            let datastore = WKWebsiteDataStore.default()
+            datastore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+                datastore.removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), for: records, completionHandler: {})
+            }
+        }
+
         return true
     }
+
 
     // MARK: UISceneSession Lifecycle
 
