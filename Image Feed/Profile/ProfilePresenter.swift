@@ -2,10 +2,23 @@ import Foundation
 
 final class ProfilePresenter: ProfilePresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
-    private let logoutService = ProfileLogoutService.shared
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    private let profileService: ProfileService
+        private let profileImageService: ProfileImageService
+        private let logoutService: ProfileLogoutService
+        
+        private var profileImageServiceObserver: NSObjectProtocol?
+
+        init(
+            profileService: ProfileService = .shared,
+            profileImageService: ProfileImageService = .shared,
+            logoutService: ProfileLogoutService = .shared
+        ) {
+            self.profileService = profileService
+            self.profileImageService = profileImageService
+            self.logoutService = logoutService
+        }
+
 
     func viewDidLoad() {
         view?.showSkeleton()
@@ -52,3 +65,5 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
 }
+
+

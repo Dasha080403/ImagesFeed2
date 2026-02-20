@@ -2,10 +2,8 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
-    
-    var presenter: ProfilePresenter?
-    var presenterProtocol: ProfilePresenterProtocol?
-    private var gradientLayers = Set<CAGradientLayer>()
+var presenter: ProfilePresenterProtocol?
+private var gradientLayers = Set<CAGradientLayer>()
     
     // MARK: - UI Elements
     private let avatarImageView: UIImageView = {

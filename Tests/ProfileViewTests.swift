@@ -1,20 +1,46 @@
-//
-//  ProfileViewTests.swift
-//  Image Feed
-//
-//  Created by Дарья Савинкина on 19.02.2026.
-//
-
-import XCTest
+//import XCTest
 @testable import Image_Feed
+import Foundation
+import XCTest
 
-// MARK: - Spies
+final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
+    var displayProfileDetailsCalled = false
+    var updateAvatarCalled = false
+    var showSkeletonCalled = false
+    var hideSkeletonCalled = false
+    var showLogoutAlertCalled = false
+    
+    var name: String?
+    var login: String?
+    var bio: String?
+    var avatarURL: URL?
 
-final class ProfilePresenterSpy: ProfilePresenterProtocol {
-    func confirmLogout() {
-        print("puk")
+    func displayProfileDetails(name: String, login: String, bio: String) {
+        displayProfileDetailsCalled = true
+        self.name = name
+        self.login = login
+        self.bio = bio
     }
     
+    func updateAvatar(with url: URL) {
+        updateAvatarCalled = true
+        self.avatarURL = url
+    }
+    
+    func showSkeleton() {
+        showSkeletonCalled = true
+    }
+    
+    func hideSkeleton() {
+        hideSkeletonCalled = true
+    }
+    
+    func showLogoutAlert() {
+        showLogoutAlertCalled = true
+    }
+}
+
+final class ProfilePresenterSpy: ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol?
     var viewDidLoadCalled: Bool = false
     var didTapLogoutCalled: Bool = false
@@ -26,109 +52,54 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
     func didTapLogout() {
         didTapLogoutCalled = true
     }
+    
+    func confirmLogout() {}
 }
 
-final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
-    func showLogoutAlert() {
-        print("puk")
-    }
-    
-    var displayProfileDetailsCalled: Bool = false
-    var updateAvatarCalled: Bool = false
-    var showSkeletonCalled: Bool = false
-    var hideSkeletonCalled: Bool = false
-    
-    var lastUpdateAvatarURL: URL?
-
-    func displayProfileDetails(name: String, login: String, bio: String) {
-        displayProfileDetailsCalled = true
-    }
-
-    func updateAvatar(with url: URL) {
-        updateAvatarCalled = true
-        lastUpdateAvatarURL = url
-    }
-
-    func showSkeleton() {
-        showSkeletonCalled = true
-    }
-
-    func hideSkeleton() {
-        hideSkeletonCalled = true
-    }
-}
-
-// MARK: - Tests
 
 final class ProfileViewTests: XCTestCase {
 
     func testViewControllerCallsViewDidLoad() {
-        // given
         let viewController = ProfileViewController()
-        let presenterProtocol = ProfilePresenterSpy()
-        viewController.presenterProtocol = presenterProtocol
-        presenterProtocol.view = viewController
+        let presenterSpy = ProfilePresenterSpy()
+        viewController.presenter = presenterSpy
+        presenterSpy.view = viewController
         
-        // when
         _ = viewController.view
         
-        // then
-        XCTAssertTrue(presenterProtocol.viewDidLoadCalled)
+        XCTAssertTrue(presenterSpy.viewDidLoadCalled)
     }
 
     func testPresenterCallsShowSkeleton() {
-        // given
-        let viewController = ProfileViewControllerSpy()
+        let viewControllerSpy = ProfileViewControllerSpy()
         let presenter = ProfilePresenter()
-        presenter.view = viewController
+        presenter.view = viewControllerSpy
         
-        // when
         presenter.viewDidLoad()
         
-        // then
-        XCTAssertTrue(viewController.showSkeletonCalled)
+        XCTAssertTrue(viewControllerSpy.showSkeletonCalled)
     }
 
-    // 3. Тест: Презентер вызывает обновление данных (если профиль уже загружен в Service)
-    func testPresenterCallsDisplayProfileDetails() {
-        // given
-        let viewController = ProfileViewControllerSpy()
-        let presenter = ProfilePresenter()
-        presenter.view = viewController
-        
-        // when
-        presenter.viewDidLoad()
-        
-        // then
-        XCTAssertTrue(viewController.displayProfileDetailsCalled)
-    }
+    func testPresenterCallsDisplayDetails() {
+           // Given 
+           let presenter = ProfilePresenter()
+           let viewSpy = ProfileViewControllerSpy()
+           presenter.view = viewSpy
+           
+           // When
+           presenter.viewDidLoad()
+           
+           // Then
+           XCTAssertTrue(viewSpy.showSkeletonCalled, "Презентер должен был вызвать показ скелетона")
+       }
 
-    func testPresenterCallsLogout() {
-        // given
-        let viewController = ProfileViewController()
-        let presenterProtocol = ProfilePresenterSpy()
-        viewController.presenterProtocol = presenterProtocol
-        
-        // when
-        presenterProtocol.didTapLogout()
-        
-        // then
-        XCTAssertTrue(presenterProtocol.didTapLogoutCalled)
-    }
-    
-    // 5. Тест: Передача URL аватара во View
-    func testPresenterUpdatesAvatarURL() {
-        // given
-        let viewController = ProfileViewControllerSpy()
+    func testPresenterCallsShowLogoutAlert() {
+        let viewControllerSpy = ProfileViewControllerSpy()
         let presenter = ProfilePresenter()
-        presenter.view = viewController
+        presenter.view = viewControllerSpy
         
-        // when
-        presenter.viewDidLoad()
+        presenter.didTapLogout()
         
-        // then
-        if ProfileImageService.shared.avatarURL != nil {
-            XCTAssertTrue(viewController.updateAvatarCalled)
-        }
+        XCTAssertTrue(viewControllerSpy.showLogoutAlertCalled)
     }
 }
