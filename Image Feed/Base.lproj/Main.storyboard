@@ -130,7 +130,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h9w-Nn-gD3">
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="logout button" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h9w-Nn-gD3">
                                 <rect key="frame" x="16" y="690" width="382" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="fpI-X6-lzy"/>
@@ -178,10 +178,10 @@
             </objects>
             <point key="canvasLocation" x="-830.43478260869574" y="1283.7053571428571"/>
         </scene>
-        <!--Web View View Controller-->
+        <!--Web View Controller-->
         <scene sceneID="AIT-E7-08K">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="NwP-NK-f26" customClass="WebViewViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="WebViewViewController" storyboardIdentifier="WebViewViewController" modalPresentationStyle="fullScreen" id="NwP-NK-f26" userLabel="Web View Controller" customClass="WebViewViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jCF-s6-U5T">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -256,7 +256,7 @@
                                     <action selector="didTapShareButton:" destination="kwv-55-esW" eventType="touchUpInside" id="fdf-75-EwI"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faM-pN-1zx" userLabel="Back Button">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" restorationIdentifier="nav back button white" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faM-pN-1zx" userLabel="Back Button">
                                 <rect key="frame" x="0.0" y="12" width="59" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="aUB-lx-R7l"/>
@@ -264,7 +264,7 @@
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Backward">
+                                <state key="normal" image="nav back button white">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -317,10 +317,10 @@
         <image name="0" width="1600" height="1059"/>
         <image name="Active 1" width="30" height="30"/>
         <image name="Active2" width="30" height="30"/>
-        <image name="Backward" width="24" height="24"/>
         <image name="Logo_of_Unsplash" width="60" height="60"/>
         <image name="Sharing 1" width="50" height="50"/>
         <image name="like_button_on" width="42" height="42"/>
+        <image name="nav back button white" width="24" height="24"/>
         <namedColor name="YP Black">
             <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

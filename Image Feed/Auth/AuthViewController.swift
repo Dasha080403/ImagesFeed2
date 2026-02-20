@@ -11,7 +11,7 @@ import ProgressHUD
 
 
 protocol AuthViewControllerDelegate: AnyObject {
-    func didAuthenticate(_ vc: AuthViewController)
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
 }
 
 final class AuthViewController: UIViewController {
@@ -27,16 +27,19 @@ final class AuthViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination as? WebViewViewController
-            else {
-                assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
-                return
+                guard let webViewViewController = segue.destination as? WebViewViewController else {
+                    assertionFailure("Failed to prepare for \(showWebViewSegueIdentifier)")
+                    return
+                }
+                let authHelper = WebViewHelper()
+                let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+                
+                webViewViewController.presenter = webViewPresenter
+                webViewPresenter.view = webViewViewController
+                webViewViewController.delegate = self
+            } else {
+                super.prepare(for: segue, sender: sender)
             }
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
     }
     
     private func configureBackButton() {
@@ -47,26 +50,16 @@ final class AuthViewController: UIViewController {
     }
 }
 
-extension AuthViewController: WebViewViewControllerDelegate{
+extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        guard !isAuthenticating else { return }
-        isAuthenticating = true
-        fetchOAuthToken(code) { [weak self] result in
+        vc.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
-            
-            switch result {
-            case .success:
-                self.delegate?.didAuthenticate(self)
-            case .failure(let error):
-                print("error: \(error)")
-            }
-           // vc.dismiss(animated: true)
+            self.delegate?.authViewController(self, didAuthenticateWithCode: code)
         }
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         vc.dismiss(animated: true)
-        
     }
 }
 

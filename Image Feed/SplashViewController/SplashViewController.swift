@@ -11,6 +11,8 @@ final class SplashViewController: UIViewController {
     
     private let storage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
+    private let oauth2Service = OAuth2Service.shared
+    private var isFirstAppearance = true
     
     override func loadView() {
         self.view = SplashView()
@@ -19,20 +21,14 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let token = storage.token {
-            fetchProfile(token: token)
-        } else {
-            showAuthController()
+        if isFirstAppearance {
+            if let token = storage.token {
+                fetchProfile(token: token)
+            } else {
+                showAuthController()
+            }
+            isFirstAppearance = false
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
     }
     
     private func showAuthController() {
@@ -47,43 +43,51 @@ final class SplashViewController: UIViewController {
     }
     
     private func switchToTabBarController() {
-        DispatchQueue.main.async {
-            guard let window = UIApplication.shared.windows.first else {
-                assertionFailure("Invalid Configuration")
-                return
-            }
-            let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-                .instantiateViewController(withIdentifier: "TabBarViewController")
-            window.rootViewController = tabBarController
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
         }
+        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+            .instantiateViewController(withIdentifier: "TabBarViewController")
+        window.rootViewController = tabBarController
     }
     
     private func fetchProfile(token: String) {
+        UIBlockingProgressHUD.show()
+        
         profileService.fetchProfile(token) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                case .success(let profile):
-                    ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
-                    self.switchToTabBarController()
-                case .failure:
-                    print("Ошибка загрузки профиля")
-                }
+            UIBlockingProgressHUD.dismiss()
+            
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
+                self.switchToTabBarController()
+            case .failure:
+                break
             }
         }
     }
 }
 
-// MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        dismiss(animated: true)
-    }
-    
-    func didAuthenticate(_ vc: AuthViewController) {
-        vc.dismiss(animated: true) { [weak self] in
-            guard let self = self, let token = self.storage.token else { return }
-            self.fetchProfile(token: token)
+        UIBlockingProgressHUD.show()
+        
+        dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            
+            self.oauth2Service.fetchOAuthToken(code) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let token):
+                    self.fetchProfile(token: token)
+                case .failure:
+                    UIBlockingProgressHUD.dismiss()
+                    break
+                }
+            }
         }
     }
 }
